@@ -1,0 +1,3 @@
+threshold,flagged,precision,recall,tn,fp,fn,tp
+0.5,25,0.8,0.556,139,5,16,20
+0.3,44,0.591,0.722,126,18,10,26

@@ -1,0 +1,77 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="description" content="Wali Abidi's machine learning study of simulated microloan default risk.">
+<title>Microloan Risk Lab — Wali Abidi</title>
+<style>
+:root{--bg:#081720;--panel:#102630;--panel2:#132f39;--ink:#edf5f3;--muted:#a6bdc0;--mint:#73ddc3;--blue:#91b9ff;--line:#25434b;--orange:#f1b879}
+*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.6 Inter,ui-sans-serif,system-ui,-apple-system,Segoe UI,sans-serif}
+a{color:var(--mint);text-decoration:none}a:hover{text-decoration:underline}.wrap{max-width:1160px;margin:auto;padding:0 26px}
+nav{height:76px;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid var(--line)}.brand{display:flex;gap:12px;align-items:center;font-weight:700;letter-spacing:.02em}.brand img{width:27px;height:27px;filter:invert(87%) sepia(17%) saturate(718%) hue-rotate(103deg)}nav .links{display:flex;gap:24px;font-size:13px;color:var(--muted)}
+.hero{padding:46px 0 28px}.hero img{width:100%;border:1px solid var(--line);border-radius:22px;box-shadow:0 20px 70px #0005}
+.notice{display:flex;gap:12px;align-items:flex-start;background:#132b31;border:1px solid #31534f;border-radius:12px;padding:16px 18px;margin:22px 0;color:#c3d6d5;font-size:14px}.notice img{width:20px;height:20px;flex:none;filter:invert(85%) sepia(24%) saturate(600%) hue-rotate(108deg)}
+.kpis{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin:26px 0 56px}.kpi,.card{background:var(--panel);border:1px solid var(--line);border-radius:16px}.kpi{padding:19px}.kpi small{color:var(--muted);font-size:11px;letter-spacing:.12em;text-transform:uppercase}.kpi strong{display:block;font-size:32px;letter-spacing:-.04em;margin-top:5px}.kpi span{color:var(--muted);font-size:12px}
+section{padding:12px 0 54px}.eyebrow{color:var(--mint);font-size:11px;letter-spacing:.18em;text-transform:uppercase;font-weight:700}h2{font-size:30px;letter-spacing:-.04em;margin:7px 0 10px}p.lead{color:var(--muted);max-width:760px;margin:0 0 24px}
+.grid2{display:grid;grid-template-columns:1.15fr .85fr;gap:16px}.card{padding:22px}.card h3{margin:0 0 8px;font-size:16px}.card p{color:var(--muted);font-size:14px;margin:0}.card img.chart{width:100%;margin-top:14px;border-radius:9px}
+.table-wrap{overflow-x:auto;border:1px solid var(--line);border-radius:14px;background:var(--panel)}table{width:100%;border-collapse:collapse;font-variant-numeric:tabular-nums;font-size:13px}th,td{padding:13px 15px;text-align:right;border-bottom:1px solid var(--line);white-space:nowrap}th:first-child,td:first-child{text-align:left}th{color:var(--muted);font-weight:600}tbody tr:first-child{background:#153a3a}tbody tr:last-child td{border:0}.best{color:var(--mint);font-weight:700}
+.findings{display:grid;grid-template-columns:repeat(2,1fr);gap:14px}.finding{padding:20px;border-radius:15px;background:var(--panel);border:1px solid var(--line)}.finding .num{font-size:12px;color:var(--mint);letter-spacing:.1em}.finding h3{font-size:17px;margin:8px 0}.finding p{font-size:14px;color:var(--muted);margin:0}
+.threshold{display:grid;grid-template-columns:1fr 1fr;gap:24px;align-items:center}.threshold input{width:100%;accent-color:var(--mint)}.metricline{display:flex;justify-content:space-between;border-bottom:1px solid var(--line);padding:10px 0;color:var(--muted);font-size:14px}.metricline strong{color:var(--ink);font-variant-numeric:tabular-nums}
+.pipeline{display:grid;grid-template-columns:repeat(5,1fr);gap:8px}.step{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:16px 12px;font-size:13px;color:var(--muted);position:relative}.step b{display:block;color:var(--ink);margin:6px 0}
+footer{border-top:1px solid var(--line);padding:30px 0 50px;color:var(--muted);font-size:13px}.foot{display:flex;justify-content:space-between;gap:20px}
+@media(max-width:800px){nav .links{display:none}.kpis{grid-template-columns:repeat(2,1fr)}.grid2,.threshold{grid-template-columns:1fr}.pipeline{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:520px){.findings{grid-template-columns:1fr}.kpi strong{font-size:27px}.wrap{padding:0 17px}.hero{padding-top:24px}.foot{display:block}}
+@media(prefers-reduced-motion:reduce){*{scroll-behavior:auto!important;animation:none!important;transition:none!important}}
+</style>
+</head>
+<body>
+<div class="wrap">
+<nav><div class="brand"><img src="assets/icons/shield.svg" alt="">WALI ABIDI <span style="color:var(--muted);font-weight:400">/ ML PORTFOLIO</span></div><div class="links"><a href="#findings">Findings</a><a href="#models">Model results</a><a href="#method">Method</a><a href="https://github.com/WaliAbidi2315/microloan-default-risk">GitHub ↗</a></div></nav>
+<header class="hero"><img src="assets/cover.svg" alt="Animated microloan default risk modelling cover"></header>
+<div class="notice"><img src="assets/icons/shield.svg" alt=""><div><b>Research scope:</b> this is an educational experiment using synthetic borrower records. The risk relationships are built into the data generator; no conclusions here establish real-world lending performance.</div></div>
+<div class="kpis">
+<div class="kpi"><small>Analysis sample</small><strong>900</strong><span>synthetic loans</span></div>
+<div class="kpi"><small>Default prevalence</small><strong>20%</strong><span>180 of 900 records</span></div>
+<div class="kpi"><small>Best ROC-AUC</small><strong>0.888</strong><span>Logistic Regression</span></div>
+<div class="kpi"><small>Best F1</small><strong>0.656</strong><span>default class · Logistic Regression</span></div>
+</div>
+<section id="findings"><div class="eyebrow">01 / What the experiment says</div><h2>Signals, trade-offs & model behaviour</h2><p class="lead">The strongest result is not just a score: it is how model choice and classification thresholds change the balance between catching defaults and raising false alarms.</p>
+<div class="findings">
+<article class="finding"><div class="num">FINDING 01</div><h3>Logistic Regression led overall</h3><p>It delivered 0.888 ROC-AUC, 0.656 F1 and 0.556 recall. On the test set it caught 20 of 36 defaults, with 5 false positives.</p></article>
+<article class="finding"><div class="num">FINDING 02</div><h3>Threshold selection changes the operating point</h3><p>At 0.30, recall rose to 0.722 while precision fell to 0.591. False positives increased from 5 to 18. The lower threshold is illustrative, not an optimised policy.</p></article>
+<article class="finding"><div class="num">FINDING 03</div><h3>Scaling mattered for KNN</h3><p>Validation recall increased from 0.207 on unscaled inputs to 0.414 on scaled inputs, showing the impact of feature units on distance-based learning.</p></article>
+<article class="finding"><div class="num">FINDING 04</div><h3>Savings-group status was the tree root</h3><p>The simulated default rate was 31.3% for non-members versus 9.0% for members. Root information gain was 0.0581; this is association within the simulation, not causation.</p></article>
+</div></section>
+<section id="models"><div class="eyebrow">02 / Held-out evaluation</div><h2>Model comparison</h2><p class="lead">All models were evaluated on the same stratified test partition. Precision, recall and F1 refer to the positive class: default.</p>
+<div class="table-wrap"><table><thead><tr><th>Model</th><th>Accuracy</th><th>Precision</th><th>Recall</th><th>Specificity</th><th>F1</th><th>ROC-AUC</th></tr></thead><tbody>
+<tr><td>Logistic Regression</td><td>0.883</td><td>0.800</td><td class="best">0.556</td><td>0.965</td><td class="best">0.656</td><td class="best">0.888</td></tr>
+<tr><td>Linear SVM</td><td>0.878</td><td class="best">0.889</td><td>0.444</td><td class="best">0.986</td><td>0.593</td><td>0.884</td></tr>
+<tr><td>KNN</td><td>0.828</td><td>0.576</td><td>0.528</td><td>0.903</td><td>0.551</td><td>0.737</td></tr>
+<tr><td>Decision Tree</td><td>0.822</td><td>0.567</td><td>0.472</td><td>0.910</td><td>0.515</td><td>0.713</td></tr>
+<tr><td>Naive Bayes</td><td>0.817</td><td>0.571</td><td>0.333</td><td>0.938</td><td>0.421</td><td>0.764</td></tr>
+<tr><td>Majority baseline</td><td>0.800</td><td>0.000</td><td>0.000</td><td>1.000</td><td>0.000</td><td>0.500</td></tr>
+</tbody></table></div>
+<div class="grid2" style="margin-top:16px"><div class="card"><h3>Default-class metrics</h3><p>Precision, recall and F1 expose performance hidden by accuracy.</p><img class="chart" src="reports/figures/model_comparison.png" alt="Bar chart comparing model precision recall and F1"></div><div class="card"><h3>Confusion matrices</h3><p>Counts of true/false positives and negatives on the held-out set.</p><img class="chart" src="reports/figures/confusion_matrices.png" alt="Confusion matrix panels for six models"></div></div>
+<div class="card" style="margin-top:16px"><h3>ROC curves</h3><p>Area under the ROC curve is calculated from predicted probabilities or SVM decision scores.</p><img class="chart" src="reports/figures/roc_curves.png" alt="ROC curves for five classifiers"></div>
+</section>
+<section><div class="eyebrow">03 / Threshold explorer</div><h2>What changes when the cutoff moves?</h2><p class="lead">Move the slider to compare the two evaluated operating points from the Logistic Regression test-set illustration.</p>
+<div class="card threshold"><div><h3>Classification threshold</h3><p style="margin-bottom:18px">Illustrative values only: the threshold must be selected using validation data and a defined error-cost framework.</p><input id="threshold" type="range" min="0" max="1" step="1" value="0" aria-label="Choose threshold scenario"><div style="display:flex;justify-content:space-between;color:var(--muted);font-size:12px"><span>0.50 · default</span><span>0.30 · lower cutoff</span></div></div>
+<div><div class="metricline"><span>Precision</span><strong id="precision">0.800</strong></div><div class="metricline"><span>Recall</span><strong id="recall">0.556</strong></div><div class="metricline"><span>False positives</span><strong id="fp">5</strong></div><div class="metricline"><span>False negatives</span><strong id="fn">16</strong></div><div class="metricline"><span>Loans flagged</span><strong id="flagged">25</strong></div></div></div>
+</section>
+<section id="method"><div class="eyebrow">04 / Technical approach</div><h2>A leakage-aware workflow</h2><p class="lead">The experiment separates training, validation and test responsibilities. Imputation and scaling are learned from the fit partition only, then applied to held-out data.</p>
+<div class="pipeline">
+<div class="step"><img src="assets/icons/database.svg" width="23" alt=""><b>Data audit</b>Class balance, missingness, distributions</div>
+<div class="step"><img src="assets/icons/layers.svg" width="23" alt=""><b>Preprocessing</b>Median imputation + scaling</div>
+<div class="step"><img src="assets/icons/code.svg" width="23" alt=""><b>Modelling</b>Baseline + five classifiers</div>
+<div class="step"><img src="assets/icons/chart.svg" width="23" alt=""><b>Evaluation</b>Metrics, ROC-AUC, confusion matrix</div>
+<div class="step"><img src="assets/icons/target.svg" width="23" alt=""><b>Interpretation</b>Threshold & model trade-offs</div>
+</div>
+<div class="grid2" style="margin-top:16px"><div class="card"><h3>Reproducibility</h3><p>Fixed synthetic data generation, deterministic stratified split, checked-in sample and one-command model reproduction.</p></div><div class="card"><h3>Next validation steps</h3><p>Repeated cross-validation, temporal/external validation, probability calibration, subgroup fairness assessment and human-reviewed pilot evaluation on governed real data.</p></div></div>
+</section>
+<footer><div class="foot"><div>© 2026 Wali Abidi · Machine Learning Portfolio<br><span>All observations are synthetic. No real lending decisions.</span></div><div><a href="https://github.com/WaliAbidi2315">GitHub profile ↗</a> · <a href="https://github.com/WaliAbidi2315/microloan-default-risk">Repository ↗</a></div></div></footer>
+</div>
+<script>
+const cases=[{precision:"0.800",recall:"0.556",fp:"5",fn:"16",flagged:"25"},{precision:"0.591",recall:"0.722",fp:"18",fn:"10",flagged:"44"}];
+document.getElementById("threshold").addEventListener("input",e=>{const d=cases[Number(e.target.value)];for(const k of Object.keys(d))document.getElementById(k).textContent=d[k]});
+</script>
+</body></html>

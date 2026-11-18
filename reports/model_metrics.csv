@@ -1,0 +1,7 @@
+model,accuracy,precision,recall,specificity,f1,roc_auc
+Baseline (majority),0.8,0.0,0.0,1.0,0.0,0.5
+Logistic regression,0.883,0.8,0.556,0.965,0.656,0.888
+KNN,0.828,0.576,0.528,0.903,0.551,0.737
+Naive Bayes,0.817,0.571,0.333,0.938,0.421,0.764
+Decision tree,0.822,0.567,0.472,0.91,0.515,0.713
+Linear SVM,0.878,0.889,0.444,0.986,0.593,0.884
