@@ -1,46 +1,58 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="1200" height="470" viewBox="0 0 1200 470" role="img" aria-labelledby="title desc">
-<title id="title">Microloan default risk modelling pipeline</title>
-<desc id="desc">A two-row workflow read left to right across the first row, then continuing left to right across the second row: data generation, audit, split, preprocessing, model training, evaluation, and threshold analysis.</desc>
+<title id="title">Microloan default risk pipeline with branching data splits</title>
+<desc id="desc">Data generation flows into a sample that branches into training and locked test sets. Training branches into fit and validation partitions. Fit and validation support preprocessing and tuning, while the locked test set joins trained models only at final evaluation.</desc>
 <defs>
-  <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#0b1720"/><stop offset="1" stop-color="#102b32"/></linearGradient>
-  <linearGradient id="accent" x1="0" y1="0" x2="1" y2="0"><stop stop-color="#20b99a"/><stop offset="1" stop-color="#63d6b8"/></linearGradient>
-  <marker id="arrow" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto"><path d="M0 0 6 3 0 6" fill="none" stroke="#69cdb3" stroke-width="1.2"/></marker>
-  <style>
-    .node{fill:#142d36;stroke:#2b5c60;stroke-width:1.5}.node2{fill:#173b3e;stroke:#42a991;stroke-width:1.6}.label{font:600 16px Inter,Arial,sans-serif;fill:#eef8f5}.sub{font:12px Inter,Arial,sans-serif;fill:#a8c7c0}.small{font:11px Inter,Arial,sans-serif;fill:#78cbb5}.line{stroke:#69cdb3;stroke-width:2;fill:none;marker-end:url(#arrow)}
-  </style>
+ <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#0b1720"/><stop offset="1" stop-color="#102b32"/></linearGradient>
+ <marker id="arr" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto"><path d="M0 0 6 3 0 6" fill="none" stroke="#69cdb3" stroke-width="1.5"/></marker>
+ <marker id="lockarr" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto"><path d="M0 0 6 3 0 6" fill="none" stroke="#fb7185" stroke-width="1.5"/></marker>
+ <style>
+ .card{fill:#142d36;stroke:#2b5c60;stroke-width:1.5}.hi{fill:#173b3e;stroke:#42a991;stroke-width:1.7}.locked{fill:#351f2a;stroke:#e45b76;stroke-width:1.6}
+ .h{font:600 15px Inter,Arial,sans-serif;fill:#eef8f5}.s{font:12px Inter,Arial,sans-serif;fill:#a8c7c0}.n{font:700 11px ui-monospace,monospace;fill:#63d6b8}.wire{fill:none;stroke:#69cdb3;stroke-width:2;marker-end:url(#arr)}.lockwire{fill:none;stroke:#fb7185;stroke-width:2;stroke-dasharray:5 5;marker-end:url(#lockarr)}.tag{font:700 11px Inter,Arial,sans-serif;fill:#78cbb5}.locktag{font:700 11px Inter,Arial,sans-serif;fill:#fb91a5}
+ </style>
 </defs>
 <rect width="1200" height="470" rx="22" fill="url(#bg)"/>
-<text x="48" y="48" class="small" letter-spacing="2">REPRODUCIBLE MACHINE-LEARNING WORKFLOW</text>
-<text x="48" y="78" class="label" font-size="23">From simulated borrower records to risk insights</text>
-<!-- Row one: stages 01–04, read left to right -->
-<rect class="node" x="48" y="120" width="240" height="104" rx="14"/>
-<circle cx="78" cy="151" r="14" fill="#1f8f7c"/><text x="78" y="156" text-anchor="middle" class="label" font-size="12">01</text>
-<text x="104" y="156" class="label">Generate data</text><text x="70" y="188" class="sub">3,000 simulated loans</text><text x="70" y="205" class="sub">→ 900-row sample</text>
-<path class="line" d="M288 172H332"/>
-<rect class="node" x="336" y="120" width="240" height="104" rx="14"/>
-<circle cx="366" cy="151" r="14" fill="#1f8f7c"/><text x="366" y="156" text-anchor="middle" class="label" font-size="12">02</text>
-<text x="392" y="156" class="label">Explore &amp; audit</text><text x="358" y="188" class="sub">Data quality · distributions</text><text x="358" y="205" class="sub">Feature relationships</text>
-<path class="line" d="M576 172H620"/>
-<rect class="node" x="624" y="120" width="240" height="104" rx="14"/>
-<circle cx="654" cy="151" r="14" fill="#1f8f7c"/><text x="654" y="156" text-anchor="middle" class="label" font-size="12">03</text>
-<text x="680" y="156" class="label">Stratified split</text><text x="646" y="188" class="sub">80% train · 20% test</text><text x="646" y="205" class="sub">Test set held out</text>
-<path class="line" d="M864 172H908"/>
-<rect class="node2" x="912" y="120" width="240" height="104" rx="14"/>
-<circle cx="942" cy="151" r="14" fill="#20a98d"/><text x="942" y="156" text-anchor="middle" class="label" font-size="12">04</text>
-<text x="968" y="156" class="label">Preprocess</text><text x="934" y="188" class="sub">Median imputation</text><text x="934" y="205" class="sub">Scaling · fit on train only</text>
-<!-- Turn down, then continue along second row from left to right -->
-<path d="M1032 224V266H168V300" class="line"/>
-<text x="600" y="257" text-anchor="middle" class="small">CONTINUE TO MODEL BUILDING</text>
-<rect class="node" x="48" y="304" width="336" height="104" rx="14"/>
-<circle cx="78" cy="335" r="14" fill="#1f8f7c"/><text x="78" y="340" text-anchor="middle" class="label" font-size="12">05</text>
-<text x="104" y="340" class="label">Train &amp; compare models</text><text x="70" y="372" class="sub">Five classifiers</text><text x="70" y="389" class="sub">+ majority-class baseline</text>
-<path class="line" d="M384 356H432"/>
-<rect class="node" x="436" y="304" width="336" height="104" rx="14"/>
-<circle cx="466" cy="335" r="14" fill="#1f8f7c"/><text x="466" y="340" text-anchor="middle" class="label" font-size="12">06</text>
-<text x="492" y="340" class="label">Held-out evaluation</text><text x="458" y="372" class="sub">Confusion matrix · ROC-AUC</text><text x="458" y="389" class="sub">Precision · recall · F1</text>
-<path class="line" d="M772 356H820"/>
-<rect class="node2" x="824" y="304" width="328" height="104" rx="14"/>
-<circle cx="854" cy="335" r="14" fill="#20a98d"/><text x="854" y="340" text-anchor="middle" class="label" font-size="12">07</text>
-<text x="880" y="340" class="label">Threshold analysis</text><text x="846" y="372" class="sub">Compare missed defaults</text><text x="846" y="389" class="sub">against false alarms</text>
-<text x="48" y="445" class="small">Synthetic data only · validation guides tuning · final test set remains separate</text>
+<text x="42" y="38" class="tag" letter-spacing="2">END-TO-END MODELLING WORKFLOW</text>
+<text x="42" y="66" class="h" font-size="22">Branching data flow · leakage-aware evaluation</text>
+<!-- step 1 -->
+<rect class="card" x="42" y="112" width="190" height="76" rx="12"/>
+<text class="n" x="58" y="135">01 · SOURCE</text><text class="h" x="58" y="158">Generate &amp; sample</text><text class="s" x="58" y="177">3,000 → 900 synthetic loans</text>
+<!-- split node and branches -->
+<path class="wire" d="M232 150H270"/>
+<path class="wire" d="M270 150V116H310"/>
+<path class="lockwire" d="M270 150V230H310"/>
+<rect class="hi" x="314" y="82" width="204" height="70" rx="12"/>
+<text class="n" x="330" y="104">02A · TRAINING</text><text class="h" x="330" y="127">Train partition</text><text class="s" x="330" y="143">Stratified 80%</text>
+<rect class="locked" x="314" y="196" width="204" height="70" rx="12"/>
+<text class="locktag" x="330" y="218">02B · HELD OUT</text><text class="h" x="330" y="241">Test partition</text><text class="s" x="330" y="257">Stratified 20% · locked</text>
+<!-- train split fit validation -->
+<path class="wire" d="M518 117H552"/>
+<path class="wire" d="M552 117V94H590"/>
+<path class="wire" d="M552 117V170H590"/>
+<rect class="card" x="594" y="64" width="176" height="60" rx="11"/>
+<text class="n" x="610" y="85">03A · FIT</text><text class="h" x="610" y="106">Fit subset</text><text class="s" x="704" y="106" text-anchor="end">64% of sample</text>
+<rect class="card" x="594" y="142" width="176" height="60" rx="11"/>
+<text class="n" x="610" y="163">03B · VALIDATE</text><text class="h" x="610" y="184">Validation subset</text><text class="s" x="754" y="184" text-anchor="end">16% of sample</text>
+<!-- preparation and tuning -->
+<path class="wire" d="M770 94H804V117H830"/>
+<path class="wire" d="M770 172H804V117"/>
+<rect class="hi" x="834" y="82" width="170" height="70" rx="12"/>
+<text class="n" x="850" y="104">04 · PREPARE</text><text class="h" x="850" y="127">Preprocess</text><text class="s" x="850" y="143">Impute · scale (fit-only)</text>
+<path class="wire" d="M1004 117H1030"/>
+<rect class="card" x="1034" y="82" width="124" height="70" rx="12"/>
+<text class="n" x="1050" y="104">05 · TUNE</text><text class="h" x="1050" y="127">Validate</text><text class="s" x="1050" y="143">K · depth</text>
+<!-- test set locked path, joins only at evaluation -->
+<path class="lockwire" d="M416 266V316H915V266"/>
+<text class="locktag" x="620" y="309">TEST SET REMAINS LOCKED UNTIL FINAL EVALUATION</text>
+<!-- model and evaluation sequence -->
+<path class="wire" d="M1096 152V350H1004"/>
+<rect class="hi" x="790" y="338" width="214" height="72" rx="12"/>
+<text class="n" x="806" y="360">06 · MODEL</text><text class="h" x="806" y="383">Train classifiers</text><text class="s" x="806" y="399">5 models + baseline</text>
+<path class="wire" d="M790 374H746"/>
+<rect class="card" x="510" y="338" width="232" height="72" rx="12"/>
+<text class="n" x="526" y="360">07 · EVALUATE</text><text class="h" x="526" y="383">Held-out test metrics</text><text class="s" x="526" y="399">ROC-AUC · F1 · recall · CM</text>
+<path class="wire" d="M510 374H466"/>
+<rect class="hi" x="42" y="338" width="420" height="72" rx="12"/>
+<text class="n" x="60" y="360">08 · DECIDE</text><text class="h" x="60" y="383">Threshold &amp; cost trade-off</text><text class="s" x="60" y="399">Missed defaults vs false alarms · reporting</text>
+<path class="lockwire" d="M518 231H632V338"/>
+<text class="locktag" x="42" y="445">Synthetic data only · validation guides tuning · test data is not used to fit or select the model</text>
 </svg>
