@@ -41,19 +41,23 @@ This project investigates whether borrower and loan attributes can help distingu
 </p>
 
 ```mermaid
-flowchart TD
+flowchart LR
     A[Generate synthetic master data] --> B[Sample 900 loans · 20% default]
-    B --> C[Data audit & exploratory analysis]
-    C --> D[Stratified 80/20 train-test split]
-    D --> E[Training-only median imputation]
-    E --> F[Training-only standardisation]
-    F --> G[Majority baseline + five classifiers]
-    G --> H[Validation-based parameter inspection]
-    H --> I[Held-out test evaluation]
-    I --> J[Confusion matrices · ROC-AUC · metrics]
-    J --> K[Threshold trade-off analysis]
+    B --> C{Stratified 80/20 split}
+    C -->|80% training| D[Training partition]
+    C -->|20% test| T[Test set · locked]
+    D --> F[Fit subset]
+    D --> V[Validation subset]
+    F --> P[Training-only median imputation + standardisation]
+    V --> P
+    P --> H[Validation-based parameter inspection]
+    H --> M[Majority baseline + five classifiers]
+    M --> E[Held-out test evaluation]
+    T -. opened only for final scoring .-> E
+    E --> R[Confusion matrices · ROC-AUC · metrics]
+    R --> Q[Threshold trade-off analysis]
     classDef heldout fill:#fee2e2,stroke:#e11d48,color:#7f1d1d
-    class I heldout
+    class T heldout
 ```
 
 The workflow keeps preprocessing statistics inside the training partition and uses validation data for model inspection. The test set is reserved for the final comparison.
