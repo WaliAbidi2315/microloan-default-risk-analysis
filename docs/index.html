@@ -55,7 +55,7 @@ footer{border-top:1px solid var(--line);padding:30px 0 50px;color:var(--muted);f
 <div class="card" style="margin-top:16px"><h3>ROC curves</h3><p>Area under the ROC curve is calculated from predicted probabilities or SVM decision scores.</p><img class="chart" src="reports/figures/roc_curves.png" alt="ROC curves for five classifiers"></div>
 </section>
 <section><div class="eyebrow">03 / Threshold explorer</div><h2>What changes when the cutoff moves?</h2><p class="lead">Move the slider to compare the two evaluated operating points from the Logistic Regression test-set illustration.</p>
-<div class="card threshold"><div><h3>Classification threshold</h3><p style="margin-bottom:18px">Illustrative values only: the threshold must be selected using validation data and a defined error-cost framework.</p><input id="threshold" type="range" min="0" max="1" step="1" value="0" aria-label="Choose threshold scenario"><div style="display:flex;justify-content:space-between;color:var(--muted);font-size:12px"><span>0.50 · default</span><span>0.30 · lower cutoff</span></div></div>
+<div class="card threshold"><div><h3>Classification threshold</h3><p style="margin-bottom:18px">Illustrative values only: the threshold must be selected using validation data and a defined error-cost framework.</p><input id="threshold" type="range" min="0" max="1" step="1" value="0" aria-label="Choose threshold scenario" aria-valuetext="0.50 default threshold"><div style="display:flex;justify-content:space-between;color:var(--muted);font-size:12px"><span>0.50 · default</span><span>0.30 · lower cutoff</span></div><p id="threshold-label" aria-live="polite" style="margin-top:12px;color:var(--mint);font-size:13px">Selected: 0.50 default threshold</p></div>
 <div><div class="metricline"><span>Precision</span><strong id="precision">0.800</strong></div><div class="metricline"><span>Recall</span><strong id="recall">0.556</strong></div><div class="metricline"><span>False positives</span><strong id="fp">5</strong></div><div class="metricline"><span>False negatives</span><strong id="fn">16</strong></div><div class="metricline"><span>Loans flagged</span><strong id="flagged">25</strong></div></div></div>
 </section>
 <section id="method"><div class="eyebrow">04 / Technical approach</div><h2>A leakage-aware workflow</h2><p class="lead">The experiment separates training, validation and test responsibilities. Imputation and scaling are learned from the fit partition only, then applied to held-out data.</p>
@@ -71,7 +71,28 @@ footer{border-top:1px solid var(--line);padding:30px 0 50px;color:var(--muted);f
 <footer><div class="foot"><div>© 2026 Wali Abidi · Machine Learning Portfolio<br><span>All observations are synthetic. No real lending decisions.</span></div><div><a href="https://github.com/WaliAbidi2315">GitHub profile ↗</a> · <a href="https://github.com/WaliAbidi2315/microloan-default-risk">Repository ↗</a></div></div></footer>
 </div>
 <script>
-const cases=[{precision:"0.800",recall:"0.556",fp:"5",fn:"16",flagged:"25"},{precision:"0.591",recall:"0.722",fp:"18",fn:"10",flagged:"44"}];
-document.getElementById("threshold").addEventListener("input",e=>{const d=cases[Number(e.target.value)];for(const k of Object.keys(d))document.getElementById(k).textContent=d[k]});
+(() => {
+  const slider = document.getElementById("threshold");
+  if (!slider) return;
+  const cases = [
+    { threshold: "0.50", label: "default threshold", precision: "0.800", recall: "0.556", fp: "5", fn: "16", flagged: "25" },
+    { threshold: "0.30", label: "lower cutoff", precision: "0.591", recall: "0.722", fp: "18", fn: "10", flagged: "44" }
+  ];
+  const fields = ["precision", "recall", "fp", "fn", "flagged"];
+  function updateThreshold() {
+    const index = slider.value === "1" ? 1 : 0;
+    const result = cases[index];
+    fields.forEach(id => {
+      const node = document.getElementById(id);
+      if (node) node.textContent = result[id];
+    });
+    slider.setAttribute("aria-valuetext", result.threshold + " " + result.label);
+    const label = document.getElementById("threshold-label");
+    if (label) label.textContent = "Selected: " + result.threshold + " " + result.label;
+  }
+  slider.addEventListener("input", updateThreshold);
+  slider.addEventListener("change", updateThreshold);
+  updateThreshold();
+})();
 </script>
 </body></html>
