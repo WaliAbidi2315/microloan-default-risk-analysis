@@ -34,6 +34,30 @@ This project investigates whether borrower and loan attributes can help distingu
 - <img src="assets/icons/chart.svg" width="16" height="16" align="top" alt=""> **Threshold trade-offs made visible.** A 0.50-to-0.30 threshold comparison shows the recall/precision trade-off and the increase in false alarms.
 - <img src="assets/icons/code.svg" width="16" height="16" align="top" alt=""> **Reproducible portfolio package.** Includes a walkthrough notebook, training scripts, evaluation figures, tests and an interactive project page.
 
+## <img src="assets/icons/pipeline.svg" width="20" height="20" align="top" alt=""> Pipeline
+
+<p align="center">
+  <img src="assets/pipeline.svg" alt="End-to-end microloan default risk modelling pipeline" width="100%">
+</p>
+
+```mermaid
+flowchart TD
+    A[Generate synthetic master data] --> B[Sample 900 loans · 20% default]
+    B --> C[Data audit & exploratory analysis]
+    C --> D[Stratified 80/20 train-test split]
+    D --> E[Training-only median imputation]
+    E --> F[Training-only standardisation]
+    F --> G[Majority baseline + five classifiers]
+    G --> H[Validation-based parameter inspection]
+    H --> I[Held-out test evaluation]
+    I --> J[Confusion matrices · ROC-AUC · metrics]
+    J --> K[Threshold trade-off analysis]
+    classDef heldout fill:#fee2e2,stroke:#e11d48,color:#7f1d1d
+    class I heldout
+```
+
+The workflow keeps preprocessing statistics inside the training partition and uses validation data for model inspection. The test set is reserved for the final comparison.
+
 ## Results at a glance
 
 | Test-set metric | Logistic Regression | Linear SVM | KNN | Decision Tree | Naive Bayes |
@@ -74,30 +98,6 @@ The decision tree's root split was `savings_group <= 0.5`. In the training data,
 ### 05 · Model complexity showed overfitting
 
 For KNN, fit F1 was 1.000 at K=1 while validation F1 was 0.414; validation F1 peaked at K=3 (0.462). For the decision tree, fit F1 rose to 0.957 by depth 10 while validation F1 stayed in a much narrower band (roughly 0.32–0.42). The widening gap indicates overfitting as model complexity increases.
-
-## <img src="assets/icons/pipeline.svg" width="20" height="20" align="top" alt=""> Pipeline
-
-<p align="center">
-  <img src="assets/pipeline.svg" alt="End-to-end microloan default risk modelling pipeline" width="100%">
-</p>
-
-```mermaid
-flowchart TD
-    A[Generate synthetic master data] --> B[Sample 900 loans · 20% default]
-    B --> C[Data audit & exploratory analysis]
-    C --> D[Stratified 80/20 train-test split]
-    D --> E[Training-only median imputation]
-    E --> F[Training-only standardisation]
-    F --> G[Majority baseline + five classifiers]
-    G --> H[Validation-based parameter inspection]
-    H --> I[Held-out test evaluation]
-    I --> J[Confusion matrices · ROC-AUC · metrics]
-    J --> K[Threshold trade-off analysis]
-    classDef heldout fill:#fee2e2,stroke:#e11d48,color:#7f1d1d
-    class I heldout
-```
-
-The workflow keeps preprocessing statistics inside the training partition and uses validation data for model inspection. The test set is reserved for the final comparison.
 
 ## Dataset & ethics
 
