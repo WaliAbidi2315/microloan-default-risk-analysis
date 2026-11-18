@@ -41,21 +41,16 @@ This project investigates whether borrower and loan attributes can help distingu
 </p>
 
 ```mermaid
-flowchart LR
-    A[Generate synthetic master data] --> B[Sample 900 loans · 20% default]
+flowchart TD
+    A[Generate & sample data<br/>900 loans · 20% default] --> B[Explore & audit]
     B --> C{Stratified 80/20 split}
-    C -->|80% training| D[Training partition]
-    C -->|20% test| T[Test set · locked]
-    D --> F[Fit subset]
-    D --> V[Validation subset]
-    F --> P[Training-only median imputation + standardisation]
-    V --> P
-    P --> H[Validation-based parameter inspection]
-    H --> M[Majority baseline + five classifiers]
-    M --> E[Held-out test evaluation]
-    T -. opened only for final scoring .-> E
-    E --> R[Confusion matrices · ROC-AUC · metrics]
-    R --> Q[Threshold trade-off analysis]
+    C -->|Train| D[Fit + validation]
+    C -->|Test| T[Test set · locked]
+    D --> E[Impute & scale<br/>fit on training only]
+    E --> F[Train & tune models]
+    F --> G[Final evaluation]
+    T -.-> G
+    G --> H[Metrics & threshold analysis]
     classDef heldout fill:#fee2e2,stroke:#e11d48,color:#7f1d1d
     class T heldout
 ```
