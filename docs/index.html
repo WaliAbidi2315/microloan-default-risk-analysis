@@ -54,8 +54,8 @@ footer{border-top:1px solid var(--line);padding:30px 0 50px;color:var(--muted);f
 <div class="grid2" style="margin-top:16px"><div class="card"><h3>Default-class metrics</h3><p>Precision, recall and F1 expose performance hidden by accuracy.</p><img class="chart" src="reports/figures/model_comparison.png" alt="Bar chart comparing model precision recall and F1"></div><div class="card"><h3>Confusion matrices</h3><p>Counts of true/false positives and negatives on the held-out set.</p><img class="chart" src="reports/figures/confusion_matrices.png" alt="Confusion matrix panels for six models"></div></div>
 <div class="card" style="margin-top:16px"><h3>ROC curves</h3><p>Area under the ROC curve is calculated from predicted probabilities or SVM decision scores.</p><img class="chart" src="reports/figures/roc_curves.png" alt="ROC curves for five classifiers"></div>
 </section>
-<section><div class="eyebrow">03 / Threshold explorer</div><h2>What changes when the cutoff moves?</h2><p class="lead">Move the slider to compare the two evaluated operating points from the Logistic Regression test-set illustration.</p>
-<div class="card threshold"><div><h3>Classification threshold</h3><p style="margin-bottom:18px">Illustrative values only: the threshold must be selected using validation data and a defined error-cost framework.</p><input id="threshold" type="range" min="0" max="1" step="1" value="0" aria-label="Choose threshold scenario" aria-valuetext="0.50 default threshold"><div style="display:flex;justify-content:space-between;color:var(--muted);font-size:12px"><span>0.50 · default</span><span>0.30 · lower cutoff</span></div><p id="threshold-label" aria-live="polite" style="margin-top:12px;color:var(--mint);font-size:13px">Selected: 0.50 default threshold</p></div>
+<section><div class="eyebrow">03 / Threshold explorer</div><h2>What changes when the cutoff moves?</h2><p class="lead">Move the slider from 0.30 to 0.50. Metrics are recalculated from the held-out Logistic Regression probabilities at every 0.01 step.</p>
+<div class="card threshold"><div><h3>Classification threshold</h3><p style="margin-bottom:18px">Live test-set calculation. This explorer demonstrates the effect of a cutoff; it is not a production lending policy.</p><input id="threshold" type="range" min="30" max="50" step="1" value="50" aria-label="Classification threshold" aria-valuetext="0.50"><div style="display:flex;justify-content:space-between;color:var(--muted);font-size:12px"><span>0.30 · lower cutoff</span><span>0.50 · default</span></div><p id="threshold-label" aria-live="polite" style="margin-top:12px;color:var(--mint);font-size:13px">Loading held-out prediction scores…</p></div>
 <div><div class="metricline"><span>Precision</span><strong id="precision">0.800</strong></div><div class="metricline"><span>Recall</span><strong id="recall">0.556</strong></div><div class="metricline"><span>False positives</span><strong id="fp">5</strong></div><div class="metricline"><span>False negatives</span><strong id="fn">16</strong></div><div class="metricline"><span>Loans flagged</span><strong id="flagged">25</strong></div></div></div>
 </section>
 <section id="method"><div class="eyebrow">04 / Technical approach</div><h2>A leakage-aware workflow</h2><p class="lead">The experiment separates training, validation and test responsibilities. Imputation and scaling are learned from the fit partition only, then applied to held-out data.</p>
@@ -71,28 +71,57 @@ footer{border-top:1px solid var(--line);padding:30px 0 50px;color:var(--muted);f
 <footer><div class="foot"><div>© 2026 Wali Abidi · Machine Learning Portfolio<br><span>All observations are synthetic. No real lending decisions.</span></div><div><a href="https://github.com/WaliAbidi2315">GitHub profile ↗</a> · <a href="https://github.com/WaliAbidi2315/microloan-default-risk">Repository ↗</a></div></div></footer>
 </div>
 <script>
-(() => {
+(async () => {
   const slider = document.getElementById("threshold");
   if (!slider) return;
-  const cases = [
-    { threshold: "0.50", label: "default threshold", precision: "0.800", recall: "0.556", fp: "5", fn: "16", flagged: "25" },
-    { threshold: "0.30", label: "lower cutoff", precision: "0.591", recall: "0.722", fp: "18", fn: "10", flagged: "44" }
-  ];
   const fields = ["precision", "recall", "fp", "fn", "flagged"];
-  function updateThreshold() {
-    const index = slider.value === "1" ? 1 : 0;
-    const result = cases[index];
-    fields.forEach(id => {
-      const node = document.getElementById(id);
-      if (node) node.textContent = result[id];
-    });
-    slider.setAttribute("aria-valuetext", result.threshold + " " + result.label);
-    const label = document.getElementById("threshold-label");
-    if (label) label.textContent = "Selected: " + result.threshold + " " + result.label;
+  const label = document.getElementById("threshold-label");
+  function showUnavailable(message) {
+    if (label) label.textContent = message;
   }
-  slider.addEventListener("input", updateThreshold);
-  slider.addEventListener("change", updateThreshold);
-  updateThreshold();
+  try {
+    const response = await fetch("data/threshold_scores.json", { cache: "no-store" });
+    if (!response.ok) throw new Error("Prediction data unavailable (" + response.status + ")");
+    const payload = await response.json();
+    if (!Array.isArray(payload.y_true) || !Array.isArray(payload.probabilities) ||
+        payload.y_true.length !== payload.probabilities.length || !payload.y_true.length) {
+      throw new Error("Prediction data is incomplete");
+    }
+    const y = payload.y_true;
+    const scores = payload.probabilities;
+    function updateThreshold() {
+      const threshold = Number(slider.value) / 100;
+      let tp = 0, fp = 0, fn = 0, tn = 0;
+      for (let i = 0; i < y.length; i++) {
+        const predicted = scores[i] >= threshold ? 1 : 0;
+        if (predicted && y[i] === 1) tp++;
+        else if (predicted && y[i] === 0) fp++;
+        else if (!predicted && y[i] === 1) fn++;
+        else tn++;
+      }
+      const precision = tp + fp ? tp / (tp + fp) : 0;
+      const recall = tp + fn ? tp / (tp + fn) : 0;
+      const values = {
+        precision: precision.toFixed(3),
+        recall: recall.toFixed(3),
+        fp: String(fp),
+        fn: String(fn),
+        flagged: String(tp + fp)
+      };
+      fields.forEach(id => {
+        const node = document.getElementById(id);
+        if (node) node.textContent = values[id];
+      });
+      slider.setAttribute("aria-valuetext", threshold.toFixed(2));
+      if (label) label.textContent = "Selected threshold: " + threshold.toFixed(2) +
+        " · " + (tp + fp) + " loans flagged from " + y.length + " test records";
+    }
+    slider.addEventListener("input", updateThreshold);
+    slider.addEventListener("change", updateThreshold);
+    updateThreshold();
+  } catch (error) {
+    showUnavailable("Threshold metrics could not load: " + error.message + ". Please refresh the page.");
+  }
 })();
 </script>
 </body></html>
