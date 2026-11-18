@@ -18,6 +18,7 @@ from sklearn.tree import DecisionTreeClassifier
 ROOT = Path(__file__).resolve().parents[1]
 DATA_PATH = ROOT / "data" / "synthetic_microloan_sample.csv"
 OUTPUT_PATH = ROOT / "reports" / "reproduced_model_metrics.csv"
+THRESHOLD_PATH = ROOT / "docs" / "data" / "threshold_scores.json"
 SEED = 4_250_779_039
 K = 3
 TREE_DEPTH = 4
@@ -52,8 +53,7 @@ def main():
                                                   random_state=SEED).fit(Xtr_imp, y_train), Xte_imp),
         "Linear SVM": (SVC(kernel="linear", C=1.0).fit(Xtr_sc, y_train), Xte_sc),
     }
-    rows = []
-    for name, (model, X_eval) in models.items():
+    # Save the held-out labels and Logistic Regression probabilities so the static\n    # portfolio page can calculate exact metrics at any interactive threshold.\n    lr_model, lr_X_eval = models["Logistic regression"]\n    threshold_payload = {\n        "source": "held-out test split",\n        "y_true": y_test.astype(int).tolist(),\n        "probabilities": lr_model.predict_proba(lr_X_eval)[:, 1].tolist(),\n    }\n    THRESHOLD_PATH.parent.mkdir(parents=True, exist_ok=True)\n    THRESHOLD_PATH.write_text(json.dumps(threshold_payload), encoding="utf-8")\n\n    rows = []\n    for name, (model, X_eval) in models.items():
         pred = model.predict(X_eval)
         tn, fp, fn, tp = confusion_matrix(y_test, pred, labels=[0, 1]).ravel()
         scores = model.decision_function(X_eval) if name == "Linear SVM" else model.predict_proba(X_eval)[:, 1]
