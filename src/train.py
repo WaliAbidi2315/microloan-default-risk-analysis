@@ -53,7 +53,18 @@ def main():
                                                   random_state=SEED).fit(Xtr_imp, y_train), Xte_imp),
         "Linear SVM": (SVC(kernel="linear", C=1.0).fit(Xtr_sc, y_train), Xte_sc),
     }
-    # Save the held-out labels and Logistic Regression probabilities so the static\n    # portfolio page can calculate exact metrics at any interactive threshold.\n    lr_model, lr_X_eval = models["Logistic regression"]\n    threshold_payload = {\n        "source": "held-out test split",\n        "y_true": y_test.astype(int).tolist(),\n        "probabilities": lr_model.predict_proba(lr_X_eval)[:, 1].tolist(),\n    }\n    THRESHOLD_PATH.parent.mkdir(parents=True, exist_ok=True)\n    THRESHOLD_PATH.write_text(json.dumps(threshold_payload), encoding="utf-8")\n\n    rows = []\n    for name, (model, X_eval) in models.items():
+    # Save held-out labels and Logistic Regression probabilities for the page.
+    lr_model, lr_X_eval = models["Logistic regression"]
+    threshold_payload = {
+        "source": "held-out test split",
+        "y_true": y_test.astype(int).tolist(),
+        "probabilities": lr_model.predict_proba(lr_X_eval)[:, 1].tolist(),
+    }
+    THRESHOLD_PATH.parent.mkdir(parents=True, exist_ok=True)
+    THRESHOLD_PATH.write_text(json.dumps(threshold_payload), encoding="utf-8")
+
+    rows = []
+    for name, (model, X_eval) in models.items():
         pred = model.predict(X_eval)
         tn, fp, fn, tp = confusion_matrix(y_test, pred, labels=[0, 1]).ravel()
         scores = model.decision_function(X_eval) if name == "Linear SVM" else model.predict_proba(X_eval)[:, 1]
