@@ -11,7 +11,7 @@
 
 **A reproducible binary-classification study of microloan repayment risk.**
 
-[Explore the interactive project page](https://waliabidi2315.github.io/microloan-default-risk/) · [View source](https://github.com/WaliAbidi2315/microloan-default-risk)
+[Explore the interactive project page](https://waliabidi2315.github.io/microloan-default-risk-analysis/) · [View source](https://github.com/WaliAbidi2315/microloan-default-risk-analysis)
 
 </div>
 
@@ -24,6 +24,15 @@ This project investigates whether borrower and loan attributes can help distingu
 **Best overall ranking model:** Logistic Regression, with a test ROC-AUC of **0.888** and default-class F1 of **0.656**. At the default 0.5 threshold it identified 20 of 36 defaults (recall **55.6%**) while maintaining **80.0% precision**.
 
 > **Scope note:** This is an educational modelling exercise on a deliberately simulated dataset. The synthetic risk formula determines the data-generating process, so these results demonstrate analytical workflow and model comparison—not validated lending performance or real-world borrower behaviour.
+
+## <img src="assets/icons/highlights.svg" width="20" height="20" align="top" alt=""> Highlights
+
+- <img src="assets/icons/shield.svg" width="16" height="16" align="top" alt=""> **Leakage-aware preprocessing.** Median imputation and standardisation are fitted on the training partition only; the held-out test set is reserved for final evaluation.
+- <img src="assets/icons/chart.svg" width="16" height="16" align="top" alt=""> **Five-model benchmark.** Logistic Regression, Linear SVM, KNN, Decision Tree and Gaussian Naive Bayes are compared with a majority-class baseline.
+- <img src="assets/icons/target.svg" width="16" height="16" align="top" alt=""> **Imbalance-aware evaluation.** Recall, precision, specificity, F1 and ROC-AUC are reported alongside accuracy, exposing the baseline's 0% default recall.
+- <img src="assets/icons/layers.svg" width="16" height="16" align="top" alt=""> **Model behaviour investigated.** Validation sweeps examine KNN scaling and model complexity, while an information-gain calculation explains the decision tree's root split.
+- <img src="assets/icons/chart.svg" width="16" height="16" align="top" alt=""> **Threshold trade-offs made visible.** A 0.50-to-0.30 threshold comparison shows the recall/precision trade-off and the increase in false alarms.
+- <img src="assets/icons/code.svg" width="16" height="16" align="top" alt=""> **Reproducible portfolio package.** Includes a walkthrough notebook, training scripts, evaluation figures, tests and an interactive project page.
 
 ## Results at a glance
 
@@ -66,33 +75,29 @@ The decision tree's root split was `savings_group <= 0.5`. In the training data,
 
 For KNN, fit F1 was 1.000 at K=1 while validation F1 was 0.414; validation F1 peaked at K=3 (0.462). For the decision tree, fit F1 rose to 0.957 by depth 10 while validation F1 stayed in a much narrower band (roughly 0.32–0.42). The widening gap indicates overfitting as model complexity increases.
 
-## Project workflow
+## <img src="assets/icons/pipeline.svg" width="20" height="20" align="top" alt=""> Pipeline
 
-```text
-Synthetic data generation
-        │
-        ▼
-Data audit & exploratory analysis
-        │
-        ▼
-Stratified train / test split
-        │
-        ├── Training-only median imputation
-        └── Training-only standardisation
-        │
-        ▼
-Majority baseline + five classifiers
-        │
-        ▼
-Validation-based parameter inspection
-        │
-        ▼
-Held-out test evaluation
-        │
-        ├── Confusion matrices & classification metrics
-        ├── ROC curves / ROC-AUC from continuous scores
-        └── Threshold trade-off analysis
+<p align="center">
+  <img src="assets/pipeline.svg" alt="End-to-end microloan default risk modelling pipeline" width="100%">
+</p>
+
+```mermaid
+flowchart TD
+    A[Generate synthetic master data] --> B[Sample 900 loans · 20% default]
+    B --> C[Data audit & exploratory analysis]
+    C --> D[Stratified 80/20 train-test split]
+    D --> E[Training-only median imputation]
+    E --> F[Training-only standardisation]
+    F --> G[Majority baseline + five classifiers]
+    G --> H[Validation-based parameter inspection]
+    H --> I[Held-out test evaluation]
+    I --> J[Confusion matrices · ROC-AUC · metrics]
+    J --> K[Threshold trade-off analysis]
+    classDef heldout fill:#fee2e2,stroke:#e11d48,color:#7f1d1d
+    class I heldout
 ```
+
+The workflow keeps preprocessing statistics inside the training partition and uses validation data for model inspection. The test set is reserved for the final comparison.
 
 ## Dataset & ethics
 
