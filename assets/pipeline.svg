@@ -1,6 +1,6 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="410" viewBox="0 0 1200 410" role="img" aria-labelledby="title desc">
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="470" viewBox="0 0 1200 470" role="img" aria-labelledby="title desc">
 <title id="title">Microloan default risk modelling pipeline</title>
-<desc id="desc">Synthetic data generation, exploratory analysis, stratified split, training-only preprocessing, model comparison, held-out evaluation, and threshold analysis.</desc>
+<desc id="desc">A two-row workflow read left to right across the first row, then continuing left to right across the second row: data generation, audit, split, preprocessing, model training, evaluation, and threshold analysis.</desc>
 <defs>
   <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#0b1720"/><stop offset="1" stop-color="#102b32"/></linearGradient>
   <linearGradient id="accent" x1="0" y1="0" x2="1" y2="0"><stop stop-color="#20b99a"/><stop offset="1" stop-color="#63d6b8"/></linearGradient>
@@ -9,40 +9,38 @@
     .node{fill:#142d36;stroke:#2b5c60;stroke-width:1.5}.node2{fill:#173b3e;stroke:#42a991;stroke-width:1.6}.label{font:600 16px Inter,Arial,sans-serif;fill:#eef8f5}.sub{font:12px Inter,Arial,sans-serif;fill:#a8c7c0}.small{font:11px Inter,Arial,sans-serif;fill:#78cbb5}.line{stroke:#69cdb3;stroke-width:2;fill:none;marker-end:url(#arrow)}
   </style>
 </defs>
-<rect width="1200" height="410" rx="22" fill="url(#bg)"/>
+<rect width="1200" height="470" rx="22" fill="url(#bg)"/>
 <text x="48" y="48" class="small" letter-spacing="2">REPRODUCIBLE MACHINE-LEARNING WORKFLOW</text>
 <text x="48" y="78" class="label" font-size="23">From simulated borrower records to risk insights</text>
-<!-- top row -->
-<rect class="node" x="48" y="125" width="190" height="92" rx="12"/>
-<circle cx="75" cy="154" r="13" fill="#1f8f7c"/><text x="75" y="159" text-anchor="middle" class="label" font-size="12">01</text>
-<text x="98" y="158" class="label">Generate data</text><text x="68" y="187" class="sub">3,000 simulated loans</text><text x="68" y="203" class="sub">→ 900-row sample</text>
-<path class="line" d="M238 171H278"/>
-<rect class="node" x="282" y="125" width="190" height="92" rx="12"/>
-<circle cx="309" cy="154" r="13" fill="#1f8f7c"/><text x="309" y="159" text-anchor="middle" class="label" font-size="12">02</text>
-<text x="332" y="158" class="label">Explore &amp; audit</text><text x="302" y="187" class="sub">Data quality · distributions</text><text x="302" y="203" class="sub">Feature relationships</text>
-<path class="line" d="M472 171H512"/>
-<rect class="node" x="516" y="125" width="190" height="92" rx="12"/>
-<circle cx="543" cy="154" r="13" fill="#1f8f7c"/><text x="543" y="159" text-anchor="middle" class="label" font-size="12">03</text>
-<text x="566" y="158" class="label">Stratified split</text><text x="536" y="187" class="sub">80% train · 20% test</text><text x="536" y="203" class="sub">Test set held out</text>
-<path class="line" d="M706 171H746"/>
-<rect class="node2" x="750" y="125" width="190" height="92" rx="12"/>
-<circle cx="777" cy="154" r="13" fill="#20a98d"/><text x="777" y="159" text-anchor="middle" class="label" font-size="12">04</text>
-<text x="800" y="158" class="label">Preprocess</text><text x="770" y="187" class="sub">Median imputation</text><text x="770" y="203" class="sub">Scaling · fit on train only</text>
-<path class="line" d="M940 171H980"/>
-<rect class="node" x="984" y="125" width="168" height="92" rx="12"/>
-<circle cx="1011" cy="154" r="13" fill="#1f8f7c"/><text x="1011" y="159" text-anchor="middle" class="label" font-size="12">05</text>
-<text x="1034" y="158" class="label">Train models</text><text x="1004" y="187" class="sub">5 classifiers</text><text x="1004" y="203" class="sub">+ majority baseline</text>
-<!-- connector to lower row -->
-<path class="line" d="M1068 217V276H1032"/>
-<rect class="node" x="842" y="282" width="310" height="82" rx="12"/>
-<circle cx="872" cy="312" r="13" fill="#1f8f7c"/><text x="872" y="317" text-anchor="middle" class="label" font-size="12">06</text>
-<text x="896" y="316" class="label">Held-out evaluation</text><text x="862" y="344" class="sub">Confusion matrix · ROC-AUC · precision · recall · F1</text>
-<path class="line" d="M842 323H800"/>
-<rect class="node2" x="470" y="282" width="326" height="82" rx="12"/>
-<circle cx="500" cy="312" r="13" fill="#20a98d"/><text x="500" y="317" text-anchor="middle" class="label" font-size="12">07</text>
-<text x="524" y="316" class="label">Threshold &amp; decision analysis</text><text x="490" y="344" class="sub">Compare missed defaults vs false alarms</text>
-<path class="line" d="M470 323H428"/>
-<rect class="node" x="48" y="282" width="376" height="82" rx="12"/>
-<text x="72" y="316" class="label">Reproducible outputs</text><text x="72" y="344" class="sub">Metrics tables · ROC curves · confusion matrices · reports</text>
-<text x="48" y="392" class="small">Synthetic data only · validation guides tuning · final test set remains separate</text>
+<!-- Row one: stages 01–04, read left to right -->
+<rect class="node" x="48" y="120" width="240" height="104" rx="14"/>
+<circle cx="78" cy="151" r="14" fill="#1f8f7c"/><text x="78" y="156" text-anchor="middle" class="label" font-size="12">01</text>
+<text x="104" y="156" class="label">Generate data</text><text x="70" y="188" class="sub">3,000 simulated loans</text><text x="70" y="205" class="sub">→ 900-row sample</text>
+<path class="line" d="M288 172H332"/>
+<rect class="node" x="336" y="120" width="240" height="104" rx="14"/>
+<circle cx="366" cy="151" r="14" fill="#1f8f7c"/><text x="366" y="156" text-anchor="middle" class="label" font-size="12">02</text>
+<text x="392" y="156" class="label">Explore &amp; audit</text><text x="358" y="188" class="sub">Data quality · distributions</text><text x="358" y="205" class="sub">Feature relationships</text>
+<path class="line" d="M576 172H620"/>
+<rect class="node" x="624" y="120" width="240" height="104" rx="14"/>
+<circle cx="654" cy="151" r="14" fill="#1f8f7c"/><text x="654" y="156" text-anchor="middle" class="label" font-size="12">03</text>
+<text x="680" y="156" class="label">Stratified split</text><text x="646" y="188" class="sub">80% train · 20% test</text><text x="646" y="205" class="sub">Test set held out</text>
+<path class="line" d="M864 172H908"/>
+<rect class="node2" x="912" y="120" width="240" height="104" rx="14"/>
+<circle cx="942" cy="151" r="14" fill="#20a98d"/><text x="942" y="156" text-anchor="middle" class="label" font-size="12">04</text>
+<text x="968" y="156" class="label">Preprocess</text><text x="934" y="188" class="sub">Median imputation</text><text x="934" y="205" class="sub">Scaling · fit on train only</text>
+<!-- Turn down, then continue along second row from left to right -->
+<path d="M1032 224V266H168V300" class="line"/>
+<text x="600" y="257" text-anchor="middle" class="small">CONTINUE TO MODEL BUILDING</text>
+<rect class="node" x="48" y="304" width="336" height="104" rx="14"/>
+<circle cx="78" cy="335" r="14" fill="#1f8f7c"/><text x="78" y="340" text-anchor="middle" class="label" font-size="12">05</text>
+<text x="104" y="340" class="label">Train &amp; compare models</text><text x="70" y="372" class="sub">Five classifiers</text><text x="70" y="389" class="sub">+ majority-class baseline</text>
+<path class="line" d="M384 356H432"/>
+<rect class="node" x="436" y="304" width="336" height="104" rx="14"/>
+<circle cx="466" cy="335" r="14" fill="#1f8f7c"/><text x="466" y="340" text-anchor="middle" class="label" font-size="12">06</text>
+<text x="492" y="340" class="label">Held-out evaluation</text><text x="458" y="372" class="sub">Confusion matrix · ROC-AUC</text><text x="458" y="389" class="sub">Precision · recall · F1</text>
+<path class="line" d="M772 356H820"/>
+<rect class="node2" x="824" y="304" width="328" height="104" rx="14"/>
+<circle cx="854" cy="335" r="14" fill="#20a98d"/><text x="854" y="340" text-anchor="middle" class="label" font-size="12">07</text>
+<text x="880" y="340" class="label">Threshold analysis</text><text x="846" y="372" class="sub">Compare missed defaults</text><text x="846" y="389" class="sub">against false alarms</text>
+<text x="48" y="445" class="small">Synthetic data only · validation guides tuning · final test set remains separate</text>
 </svg>
