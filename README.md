@@ -128,6 +128,16 @@ The generator intentionally encodes a risk score using loan-to-income ratio, agr
 | Evaluation | Accuracy, precision, recall, specificity, F1, ROC-AUC, confusion matrices |
 | ROC-AUC | Computed from predicted probabilities or SVM decision scores—not hard class labels |
 
+## Tech Stack
+
+- **Language:** Python 3.10+
+- **Data handling:** pandas, NumPy
+- **Machine learning:** scikit-learn
+- **Visualisation:** Matplotlib, seaborn
+- **Testing:** pytest
+- **Interactive documentation:** Jupyter Notebook
+- **Web publishing:** GitHub Pages (HTML, CSS and JavaScript)
+
 ## Repository structure
 
 ```text
